@@ -10,7 +10,8 @@
  * Open source project: https://github.com/callmeahmedr/pwa-converter
  */
 
-const CACHE_NAME = 'pwa-cache-v1';  // Name of the cache storage
+const CACHE_NAME = 'pwa-cache-v1'; // Name of the cache storage
+const CACHE_EXPIRY_DAYS = 7; // Define cache expiry period in days
 
 // List of assets to pre-cache during service worker installation
 const PRE_CACHED_ASSETS = [
@@ -49,31 +50,31 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
-            .then(cachedResponse => {
-                if (cachedResponse) {
-                    return cachedResponse; // Return cached response if available
-                }
-                return fetch(event.request)
-                    .then(networkResponse => {
-                        if (!networkResponse || networkResponse.status !== 200) {
-                            return networkResponse; // Return network response if not OK
-                        }
-                        return caches.open(CACHE_NAME)
-                            .then(cache => {
-                                // Cache the new response for future requests
-                                cache.put(event.request, networkResponse.clone());
-                                return networkResponse; // Return network response
-                            });
-                    })
-                    .catch(error => {
-                        console.error(`Fetch failed for ${event.request.url}: ${error}`);
-                        // Optionally, return a fallback response or a generic error page
-                        return new Response('Network error occurred. Please try again later.', {
-                            status: 503,
-                            statusText: 'Service Unavailable'
+        .then(cachedResponse => {
+            if (cachedResponse) {
+                return cachedResponse; // Return cached response if available
+            }
+            return fetch(event.request)
+                .then(networkResponse => {
+                    if (!networkResponse || networkResponse.status !== 200) {
+                        return networkResponse; // Return network response if not OK
+                    }
+                    return caches.open(CACHE_NAME)
+                        .then(cache => {
+                            // Cache the new response for future requests
+                            cache.put(event.request, networkResponse.clone());
+                            return networkResponse; // Return network response
                         });
+                })
+                .catch(error => {
+                    console.error(`Fetch failed for ${event.request.url}: ${error}`);
+                    // Optionally, return a fallback response or a generic error page
+                    return new Response('Network error occurred. Please try again later.', {
+                        status: 503,
+                        statusText: 'Service Unavailable'
                     });
-            })
+                });
+        })
     );
 });
 
@@ -91,3 +92,45 @@ self.addEventListener('activate', event => {
     );
     return self.clients.claim(); // Take control of clients immediately
 });
+
+// Update cache periodically
+const CACHE_UPDATE_INTERVAL = CACHE_EXPIRY_DAYS * 24 * 60 * 60 * 1000; // Cache expiry in milliseconds
+self.addEventListener('message', event => {
+    if (event.data.action === 'updateCache') {
+        updateCache();
+    }
+});
+
+function updateCache() {
+    caches.open(CACHE_NAME)
+        .then(cache => {
+            return Promise.all(
+                PRE_CACHED_ASSETS.map(url => {
+                    return fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to fetch ${url}`);
+                            }
+                            return cache.put(url, response.clone());
+                        })
+                        .catch(error => {
+                            console.warn(`Skipping ${url}: ${error.message}`);
+                        });
+                })
+            );
+        })
+        .catch(err => console.error('Cache update failed:', err));
+}
+
+// Trigger cache update periodically
+self.setInterval(() => {
+    self.clients.matchAll({
+        type: 'window'
+    }).then(clients => {
+        clients.forEach(client => {
+            client.postMessage({
+                action: 'updateCache'
+            });
+        });
+    });
+}, CACHE_UPDATE_INTERVAL); // Update every week
