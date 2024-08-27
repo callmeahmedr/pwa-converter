@@ -33,9 +33,10 @@ Replace the default icons with your own by adding them to the `icons/` directory
 ## Deployment
 To deploy your PWA:
 
-1. Make sure the `dist/` folder is in your website's root directory.
-2. Add the script tag to your HTML.
-3. The PWA will now work on your site!
+1. Make sure the `pwa/` folder is in your website's root directory.
+2. Remeber that the `service-worker.js` should be in your website's root directory
+3. Add the script tag to your HTML.
+4. The PWA will now work on your site!
 
 ## License
 This project is licensed under the MIT License.
