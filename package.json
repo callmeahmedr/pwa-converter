@@ -2,9 +2,9 @@
   "name": "pwa-converter",
   "version": "1.0.0",
   "description": "A simple script to convert static websites into Progressive Web Apps.",
-  "main": "src/pwa.js",
+  "main": "pwa/pwa.js",
   "scripts": {
-    "build": "cp -R src/* dist/"
+    "build": "cp -R pwa/* pwa/"
   },
   "author": "Muhammad Ahmed",
   "license": "MIT"
