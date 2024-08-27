@@ -1,5 +1,3 @@
-// src/service-worker.js
-
 const CACHE_NAME = 'pwa-cache-v1';
 const urlsToCache = [
     '/',
