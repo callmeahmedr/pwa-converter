@@ -1,5 +1,7 @@
 # PWA Converter
-This project allows you to easily convert any static website into a Progressive Web App (PWA). Simply clone the repository and include the `pwa.js` script in your website's HTML.
+This project allows you to easily convert any static website into a Progressive Web App (PWA). Simply clone the repository and include the `pwa.js` script in your website's HTML. 
+
+_It's an open source project, if you find any issues feel free to open up an issue and you can always contribute if you want to_
 
 ## How to Use
 1. Clone the repository into your project:
