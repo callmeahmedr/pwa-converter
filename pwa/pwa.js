@@ -44,13 +44,13 @@
         installButton.style.width = '60px'; // Width of the button
         installButton.style.height = '60px'; // Height of the button
         installButton.style.borderRadius = '50%'; // Make it fully rounded
-        installButton.style.backgroundColor = '#007bff'; // Blue background color
+        installButton.style.backgroundColor = '#c1ff72'; // Blue background color
         installButton.style.display = 'flex'; // Flexbox for alignment
         installButton.style.alignItems = 'center'; // Center items vertically
         installButton.style.justifyContent = 'center'; // Center items horizontally
         installButton.style.cursor = 'pointer'; // Pointer cursor on hover
         installButton.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)'; // Add shadow for better visibility
-        installButton.style.position = 'relative'; // Position relative for tooltip positioning
+        installButton.style.position = 'fixed'; // Position relative for tooltip positioning
 
         // Create an image element for the icon
         const icon = document.createElement('img');
@@ -64,9 +64,9 @@
 
         // Create a tooltip element
         const tooltip = document.createElement('div');
-        tooltip.textContent = 'Install Web App'; // Tooltip text
+        tooltip.textContent = 'Install Web App!'; // Tooltip text
         tooltip.style.position = 'absolute'; // Absolute positioning for the tooltip
-        tooltip.style.bottom = '70px'; // Position above the button
+        tooltip.style.bottom = '15px'; // Position above the button
         tooltip.style.left = '70px'; // Position to the right of the button
         tooltip.style.backgroundColor = '#333'; // Dark background color
         tooltip.style.color = '#fff'; // White text color
@@ -85,12 +85,12 @@
 
         // Add hover effects
         installButton.addEventListener('mouseover', () => {
-            installButton.style.backgroundColor = '#0056b3'; // Darker blue on hover
+            installButton.style.backgroundColor = '#b5e17d'; // Darker blue on hover
             tooltip.style.opacity = '1'; // Show tooltip
         });
 
         installButton.addEventListener('mouseout', () => {
-            installButton.style.backgroundColor = '#007bff'; // Original blue color
+            installButton.style.backgroundColor = '#c1ff72'; // Original blue color
             tooltip.style.opacity = '0'; // Hide tooltip
         });
 
