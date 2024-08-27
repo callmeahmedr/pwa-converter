@@ -1,30 +1,29 @@
 // src/pwa.js
 
 (function() {
-    // Register the Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(function(registration) {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                })
-                .catch(function(error) {
-                    console.error('Service Worker registration failed:', error);
-                });
-        });
-    }
-
-    // Dynamically insert the manifest link tag
+    // Automatically inject the manifest.json into the HTML head
     const manifestLink = document.createElement('link');
     manifestLink.rel = 'manifest';
     manifestLink.href = '/manifest.json';
     document.head.appendChild(manifestLink);
 
-    // Prompt the user to install the PWA
+    // Register the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(error => {
+                console.error('Service Worker registration failed:', error);
+            });
+    }
+
+    // Handle the PWA installation prompt
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
+        
         const installButton = document.createElement('button');
         installButton.textContent = 'Install PWA';
         installButton.style.position = 'fixed';
@@ -38,9 +37,9 @@
             deferredPrompt.prompt();
             deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the A2HS prompt');
+                    console.log('User accepted the install prompt');
                 } else {
-                    console.log('User dismissed the A2HS prompt');
+                    console.log('User dismissed the install prompt');
                 }
                 deferredPrompt = null;
             });
