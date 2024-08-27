@@ -8,15 +8,15 @@ This project allows you to easily convert any static website into a Progressive 
     git clone https://github.com/callmeahmedr/pwa-converter.git
     ```
 
-2. Copy the `dist/` folder contents into your website's root directory.
+2. Copy the `pwa/` folder and `service-worker.js` into your website's root directory.
 
 3. Add the following script tag to your HTML file(s):
 
     ```html
-    <script src="/pwa.js"></script>
+    <script src="/pwa/pwa.js"></script>
     ```
 
-4. Customize the `manifest.json` file and icons in the `dist/` folder as needed.
+4. Customize the `manifest.json` file and icons in the `pwa/` folder as needed.
 
 ## Customizing the Manifest
 The `manifest.json` file can be customized to match your website's branding and requirements:
