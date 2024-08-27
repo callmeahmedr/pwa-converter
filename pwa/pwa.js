@@ -22,6 +22,19 @@
         navigator.serviceWorker.register('/service-worker.js') // Path to the service worker
             .then(registration => {
                 console.log('Service Worker registered with scope:', registration.scope);
+
+                // Check for updates
+                registration.onupdatefound = () => {
+                    const installingWorker = registration.installing;
+
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('New content is available; please refresh.');
+                            // Notify the user about the update
+                            alert('A new version of this app is available. Please refresh.');
+                        }
+                    };
+                };
             })
             .catch(error => {
                 console.error('Service Worker registration failed:', error);
@@ -50,7 +63,6 @@
         installButton.style.justifyContent = 'center'; // Center items horizontally
         installButton.style.cursor = 'pointer'; // Pointer cursor on hover
         installButton.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)'; // Add shadow for better visibility
-        installButton.style.position = 'fixed'; // Position relative for tooltip positioning
 
         // Create an image element for the icon
         const icon = document.createElement('img');
@@ -75,39 +87,37 @@
         tooltip.style.fontSize = '12px'; // Font size
         tooltip.style.whiteSpace = 'nowrap'; // Prevent text wrapping
         tooltip.style.opacity = '0'; // Initially hidden
-        tooltip.style.transition = 'opacity 0.3s'; // Fade in effect
+        tooltip.style.transition = 'opacity 0.3s'; // Fade in/out effect
+
+        // Show tooltip on button hover
+        installButton.addEventListener('mouseover', () => {
+            tooltip.style.opacity = '1'; // Show tooltip
+        });
+
+        // Hide tooltip when not hovering
+        installButton.addEventListener('mouseout', () => {
+            tooltip.style.opacity = '0'; // Hide tooltip
+        });
 
         // Append the tooltip to the button
         installButton.appendChild(tooltip);
 
-        // Append the button to the body
-        document.body.appendChild(installButton);
-
-        // Add hover effects
-        installButton.addEventListener('mouseover', () => {
-            installButton.style.backgroundColor = '#b5e17d'; // Darker blue on hover
-            tooltip.style.opacity = '1'; // Show tooltip
-        });
-
-        installButton.addEventListener('mouseout', () => {
-            installButton.style.backgroundColor = '#c1ff72'; // Original blue color
-            tooltip.style.opacity = '0'; // Hide tooltip
-        });
-
-        // Show the install prompt when the button is clicked
+        // Add event listener for button click to show the install prompt
         installButton.addEventListener('click', () => {
-            installButton.style.display = 'none'; // Hide the button
-            deferredPrompt.prompt(); // Show the install prompt
-
-            // Check what the user chose
-            deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                } else {
-                    console.log('User dismissed the install prompt');
-                }
-                deferredPrompt = null; // Reset the deferred prompt variable
-            });
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Show the install prompt
+                deferredPrompt.userChoice.then(choiceResult => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the A2HS prompt');
+                    } else {
+                        console.log('User dismissed the A2HS prompt');
+                    }
+                    deferredPrompt = null; // Clear the prompt
+                });
+            }
         });
+
+        // Append the install button to the body
+        document.body.appendChild(installButton);
     });
 })();
