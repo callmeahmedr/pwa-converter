@@ -1,20 +1,20 @@
 {
-    "name": "App Name", // Full name of the application
-    "short_name": "App Short Name", // Short name of the application, used on the home screen
-    "start_url": "/", // The starting URL when the app is launched
-    "display": "standalone", // How the app will be displayed (standalone mode)
-    "background_color": "#ffffff", // Background color of the splash screen
-    "theme_color": "#000000", // Theme color for the browser UI
-    "icons": [ // Array of icons for different sizes
+    "name": "App Name",
+    "short_name": "App Short Name", 
+    "start_url": "/", 
+    "display": "standalone", 
+    "background_color": "#ffffff", 
+    "theme_color": "#000000", 
+    "icons": [ 
         {
-            "src": "/pwa/icons/icon-192x192.png", // Path to the 192x192 icon
-            "type": "image/png", // MIME type of the icon
-            "sizes": "192x192" // Size of the icon
+            "src": "/pwa/icons/icon-192x192.png", 
+            "type": "image/png", 
+            "sizes": "192x192" 
         },
         {
-            "src": "/pwa/icons/icon-512x512.png", // Path to the 512x512 icon
-            "type": "image/png", // MIME type of the icon
-            "sizes": "512x512" // Size of the icon
+            "src": "/pwa/icons/icon-512x512.png", 
+            "type": "image/png",
+            "sizes": "512x512"
         }
     ]
 }
