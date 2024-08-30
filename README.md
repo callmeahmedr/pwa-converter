@@ -1,6 +1,6 @@
 ![PWA Converter](https://raw.githubusercontent.com/callmeahmedr/pwa-converter/main/tmp/pwa-converter.png)
 # PWA Converter
-This project allows you to easily convert any static website into a Progressive Web App (PWA).
+A simple script to convert your websites into Progressive Web Apps.
 
 _It's an open source project, if you find any bugs feel free to open up an issue here on github and you can always contribute if you want to_
 
